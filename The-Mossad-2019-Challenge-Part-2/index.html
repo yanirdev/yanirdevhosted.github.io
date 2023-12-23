@@ -19,14 +19,14 @@
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name=viewport content="width=device-width, initial-scale=1">
 
-    <meta name=description content="Security enthusiast, developer, and blogger (sometimes)">
+    <meta name=description content="My security research blog">
     <meta name=author content="Yanir Tsarimi">
     <meta property="og:image" content="https://yanir.dev//assets/images/profile.jpg">
     <meta property="og:type" content="profile">
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>The Mossad 2019 Challenge - Part 2 | Yanir Tsarimi</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="The Mossad 2019 Challenge - Part 2" />
 <meta name="author" content="yanir" />
 <meta property="og:locale" content="en_US" />
@@ -36,12 +36,13 @@
 <meta property="og:url" content="https://yanir.dev//The-Mossad-2019-Challenge-Part-2/" />
 <meta property="og:site_name" content="Yanir Tsarimi" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-05-22T00:00:00+03:00" />
+<meta property="article:published_time" content="2019-05-16T22:00:00+04:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The Mossad 2019 Challenge - Part 2" />
 <meta name="twitter:site" content="@" />
 <meta name="twitter:creator" content="@yanir" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","headline":"The Mossad 2019 Challenge - Part 2","url":"https://yanir.dev//The-Mossad-2019-Challenge-Part-2/","dateModified":"2019-05-22T00:00:00+03:00","datePublished":"2019-05-22T00:00:00+03:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//The-Mossad-2019-Challenge-Part-2/"},"author":{"@type":"Person","name":"yanir"},"description":"The second challenge begins.","@context":"http://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"yanir"},"dateModified":"2019-05-16T22:00:00+04:00","datePublished":"2019-05-16T22:00:00+04:00","description":"The second challenge begins.","headline":"The Mossad 2019 Challenge - Part 2","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//The-Mossad-2019-Challenge-Part-2/"},"url":"https://yanir.dev//The-Mossad-2019-Challenge-Part-2/"}</script>
 <!-- End Jekyll SEO tag -->
 
     
@@ -1186,7 +1187,7 @@ pre {
   margin: 6rem auto;
   width: 100%; }
   .breaker:before {
-    content: "ΓÇó ΓÇó ΓÇó";
+    content: "• • •";
     width: 100%;
     text-align: center;
     display: block;
@@ -1429,12 +1430,6 @@ pre {
         
 
         
-            
-                <li class="item">
-                    <a class="link" href="https://yanir.dev//about">About</a>
-                </li>
-            
-        
 
         
     </ul>
@@ -1447,7 +1442,7 @@ pre {
 <h1 class="title">The Mossad 2019 Challenge - Part 2</h1>
 
 <span class="date">
-    <time datetime="22-05-2019">Wednesday. May 22, 2019</time>
+    <time datetime="16-05-2019">Thursday. May 16, 2019</time>
     
 </span>
 
@@ -1482,9 +1477,9 @@ The CSR and private key are sent to the server, and it serves you with a passwor
 
 <p><img src="/assets/mossad_challenge/2_missilesys.png" alt="" /></p>
 
-<p>In the page there’s nothing interesting except the settings button. However, when trying to reach <code class="highlighter-rouge">/settings</code>, we get an error: <code class="highlighter-rouge">You are not the administrator!</code></p>
+<p>In the page there’s nothing interesting except the settings button. However, when trying to reach <code class="language-plaintext highlighter-rouge">/settings</code>, we get an error: <code class="language-plaintext highlighter-rouge">You are not the administrator!</code></p>
 
-<p>If we try to register with the <code class="highlighter-rouge">administrator</code> username, we receive an error: <code class="highlighter-rouge">User already exists!</code>. Changing the CSR in-place yields the same error, as the server probably validates the CN in the CSR.</p>
+<p>If we try to register with the <code class="language-plaintext highlighter-rouge">administrator</code> username, we receive an error: <code class="language-plaintext highlighter-rouge">User already exists!</code>. Changing the CSR in-place yields the same error, as the server probably validates the CN in the CSR.</p>
 
 <p>Our primary playground is the CSR we’re sending to the server. As it’s generated in the client side, we can send whatever CSR we want, the question is whether the server will honor it.</p>
 
@@ -1505,7 +1500,7 @@ The CSR and private key are sent to the server, and it serves you with a passwor
 
 <p>So how do we ask to create a CA certificate from a CSR? Turns out you can add extension requests to CSR. The “Basic Constraints” extension specifies whether the certificate is a CA or not, and the maximum depth of valid certification paths.</p>
 
-<p>So let’s add a Basic Constraints extension request to our .csr, first we’ll need to create <code class="highlighter-rouge">ca.conf</code> with the following config:</p>
+<p>So let’s add a Basic Constraints extension request to our .csr, first we’ll need to create <code class="language-plaintext highlighter-rouge">ca.conf</code> with the following config:</p>
 
 <figure class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="nn">[ req ]</span>
 <span class="py">distinguished_name</span> <span class="p">=</span> <span class="s">req_distinguished_name</span>
@@ -1584,7 +1579,7 @@ Signature ok
 <span class="nv">subject</span><span class="o">=</span>CN <span class="o">=</span> administrator
 Getting CA Private Key</code></pre></figure>
 
-<p>So now we have admin.crt, all we need is to prepend that certificate to our already existing chain. To do that, we’ll first extract the root CA certificate (that belongs to the server), then we’ll <code class="highlighter-rouge">cat</code> them together into a .pem file and create a final PKCS #12 file:</p>
+<p>So now we have admin.crt, all we need is to prepend that certificate to our already existing chain. To do that, we’ll first extract the root CA certificate (that belongs to the server), then we’ll <code class="language-plaintext highlighter-rouge">cat</code> them together into a .pem file and create a final PKCS #12 file:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@beer:~/mycerts# openssl pkcs12 <span class="nt">-in</span> ca.p12 <span class="nt">-cacerts</span> <span class="nt">-nokeys</span> <span class="nt">-out</span> rootca.crt
 Enter Import Password:
@@ -1597,21 +1592,21 @@ Verifying - Enter Export Password:</code></pre></figure>
 
 <p><img src="/assets/mossad_challenge/2_certchain.png" alt="" class="marginleft25" /></p>
 
-<p>We now own the <code class="highlighter-rouge">administrator</code> end-entity certificate. Let’s access the <code class="highlighter-rouge">/settings</code> page:</p>
+<p>We now own the <code class="language-plaintext highlighter-rouge">administrator</code> end-entity certificate. Let’s access the <code class="language-plaintext highlighter-rouge">/settings</code> page:</p>
 
 <p><img src="/assets/mossad_challenge/2_telnet.png" alt="" /></p>
 
-<p>This seems to be some sort of telnet client, and a list of hosts in the LAN and their ports. If we tried to connect to any of the hosts with port 23, we would get an error: <code class="highlighter-rouge">Only one connection at a time is allowed</code>.</p>
+<p>This seems to be some sort of telnet client, and a list of hosts in the LAN and their ports. If we tried to connect to any of the hosts with port 23, we would get an error: <code class="language-plaintext highlighter-rouge">Only one connection at a time is allowed</code>.</p>
 
 <p>However, port 80 on 10.0.0.1 seems to work correctly. We can input raw HTTP requests into the textbox. I have sent a GET to /:</p>
 
 <figure class="highlight"><pre><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></figure>
 
-<p>We got a response! The internal domain seems to be different, as it’s returning a cookie for <code class="highlighter-rouge">.missilesystem.com</code>. The page would look like this:</p>
+<p>We got a response! The internal domain seems to be different, as it’s returning a cookie for <code class="language-plaintext highlighter-rouge">.missilesystem.com</code>. The page would look like this:</p>
 
 <p><img src="/assets/mossad_challenge/2_internalmgmt.png" alt="" /></p>
 
-<p>After sending a GET request to /settings, we receive a <code class="highlighter-rouge">302 Found</code> response with a redirect to /. So something’s missing. After trying a bit of different things, it appears that adding the <code class="highlighter-rouge">SID</code> cookie from the previous request allows you to access the settings page.</p>
+<p>After sending a GET request to /settings, we receive a <code class="language-plaintext highlighter-rouge">302 Found</code> response with a redirect to /. So something’s missing. After trying a bit of different things, it appears that adding the <code class="language-plaintext highlighter-rouge">SID</code> cookie from the previous request allows you to access the settings page.</p>
 
 <figure class="highlight"><pre><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/settings</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Cookie</span><span class="p">:</span> <span class="s">SID=Z0FBQUFBQmMzc1hkaG...</span></code></pre></figure>
@@ -1849,7 +1844,7 @@ Verifying - Enter Export Password:</code></pre></figure>
 
 
 <footer class="footer-main">
-    Yanir Tsarimi © 2019 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
+    Yanir Tsarimi © 2023 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
 
     <p class="extra">
         <a class="link" href="https://github.com/sergiokopplin/indigo">Indigo theme</a> by <a class="link" href="https://github.com/sergiokopplin/indigo">Kopplin</a>

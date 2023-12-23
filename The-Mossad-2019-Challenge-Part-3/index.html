@@ -19,14 +19,14 @@
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name=viewport content="width=device-width, initial-scale=1">
 
-    <meta name=description content="Security enthusiast, developer, and blogger (sometimes)">
+    <meta name=description content="My security research blog">
     <meta name=author content="Yanir Tsarimi">
     <meta property="og:image" content="https://yanir.dev//assets/images/profile.jpg">
     <meta property="og:type" content="profile">
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>The Mossad 2019 Challenge - Part 3 | Yanir Tsarimi</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="The Mossad 2019 Challenge - Part 3" />
 <meta name="author" content="yanir" />
 <meta property="og:locale" content="en_US" />
@@ -36,12 +36,13 @@
 <meta property="og:url" content="https://yanir.dev//The-Mossad-2019-Challenge-Part-3/" />
 <meta property="og:site_name" content="Yanir Tsarimi" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-05-22T00:00:00+03:00" />
+<meta property="article:published_time" content="2019-05-16T22:00:00+04:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The Mossad 2019 Challenge - Part 3" />
 <meta name="twitter:site" content="@" />
 <meta name="twitter:creator" content="@yanir" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","headline":"The Mossad 2019 Challenge - Part 3","url":"https://yanir.dev//The-Mossad-2019-Challenge-Part-3/","dateModified":"2019-05-22T00:00:00+03:00","datePublished":"2019-05-22T00:00:00+03:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//The-Mossad-2019-Challenge-Part-3/"},"author":{"@type":"Person","name":"yanir"},"description":"The third challenge begins.","@context":"http://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"yanir"},"dateModified":"2019-05-16T22:00:00+04:00","datePublished":"2019-05-16T22:00:00+04:00","description":"The third challenge begins.","headline":"The Mossad 2019 Challenge - Part 3","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//The-Mossad-2019-Challenge-Part-3/"},"url":"https://yanir.dev//The-Mossad-2019-Challenge-Part-3/"}</script>
 <!-- End Jekyll SEO tag -->
 
     
@@ -1186,7 +1187,7 @@ pre {
   margin: 6rem auto;
   width: 100%; }
   .breaker:before {
-    content: "ΓÇó ΓÇó ΓÇó";
+    content: "• • •";
     width: 100%;
     text-align: center;
     display: block;
@@ -1429,12 +1430,6 @@ pre {
         
 
         
-            
-                <li class="item">
-                    <a class="link" href="https://yanir.dev//about">About</a>
-                </li>
-            
-        
 
         
     </ul>
@@ -1447,7 +1442,7 @@ pre {
 <h1 class="title">The Mossad 2019 Challenge - Part 3</h1>
 
 <span class="date">
-    <time datetime="22-05-2019">Wednesday. May 22, 2019</time>
+    <time datetime="16-05-2019">Thursday. May 16, 2019</time>
     
 </span>
 
@@ -1514,35 +1509,35 @@ C:\Users\User\Documents\mos&gt;EncryptSoftware.exe secret.txt secret.enc</code><
   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>The main function doesn’t do too much. Most of the interesting code happens in the <code class="highlighter-rouge">encrypt_file</code> function which we’ll go through.</p>
+<p>The main function doesn’t do too much. Most of the interesting code happens in the <code class="language-plaintext highlighter-rouge">encrypt_file</code> function which we’ll go through.</p>
 
 <h2 id="analysis-of-the-encryption-function">Analysis of the encryption function</h2>
 
 <p>The function receives two parameters: one is the path to the input filename, the second is a reference to a variable that stores the buffer size.</p>
 
-<p>The function begins with calling another function, which we’ll call <code class="highlighter-rouge">createMD5Hash</code>:</p>
+<p>The function begins with calling another function, which we’ll call <code class="language-plaintext highlighter-rouge">createMD5Hash</code>:</p>
 
 <h3 id="createmd5hash">createMD5Hash</h3>
 
-<p>This function gets the length of the input file path, and allocates a buffer of the length plus 6 bytes. So if our file path was <code class="highlighter-rouge">aaa.txt</code> (7 bytes), the allocated buffer would be 13 bytes.
-Then, there’s a call to another function, which calls the <code class="highlighter-rouge">GetAdaptersInfo</code>, it returns the MAC address of the first adapter.
+<p>This function gets the length of the input file path, and allocates a buffer of the length plus 6 bytes. So if our file path was <code class="language-plaintext highlighter-rouge">aaa.txt</code> (7 bytes), the allocated buffer would be 13 bytes.
+Then, there’s a call to another function, which calls the <code class="language-plaintext highlighter-rouge">GetAdaptersInfo</code>, it returns the MAC address of the first adapter.
 Finally, you have a file path length + 6 bytes long buffer with the input path, and the additional 6 bytes are the MAC address.</p>
 
 <p>Let’s look at the pseudo code after this:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptAcquireContextW</span><span class="p">(</span><span class="o">&amp;</span><span class="n">local_24</span><span class="p">,(</span><span class="n">LPCWSTR</span><span class="p">)</span><span class="mh">0x0</span><span class="p">,(</span><span class="n">LPCWSTR</span><span class="p">)</span><span class="mh">0x0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mh">0xf0000000</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptCreateHash</span><span class="p">(</span><span class="n">local_24</span><span class="p">,</span><span class="mh">0x8003</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">&amp;</span><span class="n">local_1c</span><span class="p">);</span> <span class="c1">// MD5 Hash
-</span>  <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptHashData</span><span class="p">(</span><span class="n">local_1c</span><span class="p">,(</span><span class="n">BYTE</span> <span class="o">*</span><span class="p">)</span><span class="n">pbData</span><span class="p">,</span><span class="n">fileNameLen</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// Hash the file path + MAC address
-</span>    <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptGetHashParam</span><span class="p">(</span><span class="n">local_1c</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">md5_hash_result</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buffer_size</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// Output hash into md5_hash_result
-</span>      <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">output_buffer</span> <span class="o">=</span> <span class="p">(</span><span class="n">undefined4</span> <span class="o">*</span><span class="p">)</span><span class="n">HeapAlloc</span><span class="p">(</span><span class="mh">0x20</span><span class="p">);</span> <span class="c1">// Allocate 32byte buffer
-</span>        <span class="k">if</span> <span class="p">(</span><span class="n">output_buffer</span> <span class="o">!=</span> <span class="p">(</span><span class="n">undefined4</span> <span class="o">*</span><span class="p">)</span><span class="mh">0x0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptCreateHash</span><span class="p">(</span><span class="n">local_24</span><span class="p">,</span><span class="mh">0x8003</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">&amp;</span><span class="n">local_1c</span><span class="p">);</span> <span class="c1">// MD5 Hash</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptHashData</span><span class="p">(</span><span class="n">local_1c</span><span class="p">,(</span><span class="n">BYTE</span> <span class="o">*</span><span class="p">)</span><span class="n">pbData</span><span class="p">,</span><span class="n">fileNameLen</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// Hash the file path + MAC address</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">BVar5</span> <span class="o">=</span> <span class="n">CryptGetHashParam</span><span class="p">(</span><span class="n">local_1c</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">md5_hash_result</span><span class="p">,</span><span class="o">&amp;</span><span class="n">buffer_size</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// Output hash into md5_hash_result</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">BVar5</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">output_buffer</span> <span class="o">=</span> <span class="p">(</span><span class="n">undefined4</span> <span class="o">*</span><span class="p">)</span><span class="n">HeapAlloc</span><span class="p">(</span><span class="mh">0x20</span><span class="p">);</span> <span class="c1">// Allocate 32byte buffer</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">output_buffer</span> <span class="o">!=</span> <span class="p">(</span><span class="n">undefined4</span> <span class="o">*</span><span class="p">)</span><span class="mh">0x0</span><span class="p">)</span> <span class="p">{</span>
           <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-          <span class="o">*</span><span class="n">output_buffer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Zero-out the buffer
-</span>          <span class="n">output_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="o">*</span><span class="n">output_buffer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Zero-out the buffer</span>
+          <span class="n">output_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
           <span class="n">output_buffer</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
           <span class="n">output_buffer</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
           <span class="n">output_buffer</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -1552,8 +1547,8 @@ Finally, you have a file path length + 6 bytes long buffer with the input path, 
           <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">buffer_size</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">do</span> <span class="p">{</span>
               <span class="k">if</span> <span class="p">(</span><span class="mh">0xf</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-              <span class="c1">// Split each byte to 2 nibbles
-</span>              <span class="o">*</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">output_buffer</span> <span class="o">+</span> <span class="n">offset</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">md5_hash_result</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">;</span>
+              <span class="c1">// Split each byte to 2 nibbles</span>
+              <span class="o">*</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">output_buffer</span> <span class="o">+</span> <span class="n">offset</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">md5_hash_result</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">;</span>
               <span class="o">*</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">output_buffer</span> <span class="o">+</span> <span class="n">offset</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">md5_hash_result</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">;</span>
               <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
             <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">buffer_size</span><span class="p">);</span>
@@ -1572,8 +1567,8 @@ The program actually splits each byte in the MD5 hash into two nibbles (4 bits),
 
 <h3 id="aes-encryption">AES Encryption</h3>
 
-<p>The function starts by creating a crypto handle using <code class="highlighter-rouge">CryptAcquireContextA</code>, the provider type used is <code class="highlighter-rouge">PROV_RSA_AES</code> which hints at the program using AES encryption.
-It then creates a MD5 hash handle, which will be fed data and then passed to <code class="highlighter-rouge">CryptDeriveKey</code>. <code class="highlighter-rouge">CryptDeriveKey</code> is used to derive and generate a new encryption key from a hash object.</p>
+<p>The function starts by creating a crypto handle using <code class="language-plaintext highlighter-rouge">CryptAcquireContextA</code>, the provider type used is <code class="language-plaintext highlighter-rouge">PROV_RSA_AES</code> which hints at the program using AES encryption.
+It then creates a MD5 hash handle, which will be fed data and then passed to <code class="language-plaintext highlighter-rouge">CryptDeriveKey</code>. <code class="language-plaintext highlighter-rouge">CryptDeriveKey</code> is used to derive and generate a new encryption key from a hash object.</p>
 
 <p>So which data is being given to the MD5 hash? This is important, since if we’re able to derive from the same data, we’ll have the same AES key.</p>
 
@@ -1584,14 +1579,30 @@ It then creates a MD5 hash handle, which will be fed data and then passed to <co
   <li>4 bytes from the disk serial number.</li>
 </ol>
 
-<p>The function gets the BIOS and disk serial number by running <code class="highlighter-rouge">wmic bios get serialnumber</code> and <code class="highlighter-rouge">wmic diskdrive get serialnumber</code> in cmd.exe, piping the output to a file (<code class="highlighter-rouge">command_result.txt</code>) and reading 4 bytes from the second line of the file.</p>
+<p>The function gets the BIOS and disk serial number by running <code class="language-plaintext highlighter-rouge">wmic bios get serialnumber</code> and <code class="language-plaintext highlighter-rouge">wmic diskdrive get serialnumber</code> in cmd.exe, piping the output to a file (<code class="language-plaintext highlighter-rouge">command_result.txt</code>) and reading 4 bytes from the second line of the file.</p>
 
 <p>So, the 14 byte buffer is fed to the hash handle, a key is derived and then it encrypts the input file, by block sizes of 16 bytes. The AES encryption func also receives a 2nd parameter where the total encrypted buffer size is stored, this number will be divisible by 16 as 16 is the AES block size.</p>
 
-<h2 id="the-mersenne-twister-and-file-format">The Mersenne Twister and file format</h2>
+<h2 id="the-junk-array-and-file-format">The junk array, and file format</h2>
 
-<p>After the AES encryption part, the program gets 4 bytes from BIOS serial number similar to before, and fills an integer array of size 625.
-The first 4 bytes in that array are the BIOS S/N, and then each 4 bytes are the previous 4 bytes multiplied by 6069, and the last 4 bytes serve as the counter. This array plays a role when writing to the file. It’s actually an internal state for the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister</a> (MT19937). Mersenne twister is a pseudo-random number generator, I realized this was a Mersenne twister after solving this challenge when discussing the solution with someone. In this case, the PRNG seed is 4 bytes from the BIOS S/N.</p>
+<p>After the AES encryption part, the program gets 4 bytes from BIOS serial number similar to before, and fills an array of 2500 bytes.
+The first 4 bytes in that array are the BIOS S/N, and then each 4 bytes are the previous 4 bytes multiplied by 6069, and the last 4 bytes serve as the counter. This junk array plays a role when writing to the file.</p>
+
+<p>This is my python pseudo-code to reconstruct the same array:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">struct</span>
+<span class="n">starting_bios_value</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="s">"VMwa"</span><span class="p">)</span> <span class="c1"># My VMware BIOS S/N string
+</span>
+<span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">reps</span><span class="o">=</span><span class="mi">623</span><span class="p">):</span>
+  <span class="n">buf</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+  <span class="n">current_value</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">starting_bios_value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">buf</span> <span class="o">+=</span> <span class="n">starting_bios_value</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">reps</span><span class="p">):</span>
+    <span class="n">current_value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6069</span> <span class="o">*</span> <span class="n">current_value</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+    <span class="n">buf</span> <span class="o">+=</span> <span class="n">struct</span><span class="p">.</span><span class="n">pack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">current_value</span><span class="p">)</span>
+  <span class="c1"># The counter
+</span>  <span class="n">buf</span> <span class="o">+=</span> <span class="n">struct</span><span class="p">.</span><span class="n">pack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="mi">624</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">buf</span></code></pre></figure>
 
 <p>So the beginning of the file is being built this way:</p>
 
@@ -1602,16 +1613,15 @@ The first 4 bytes in that array are the BIOS S/N, and then each 4 bytes are the 
 
 <p>Then, the AES encrypted data is being written in a very specific way. First the program calculates how much bytes to write out of the AES encrypted buffer each time, and after how many iterations should it drop that number by 1.</p>
 
-<p><code class="highlighter-rouge">bytes_to_write = encrypted_buffer_size / 739 + 1</code></p>
-
-<p><code class="highlighter-rouge">iterations_until_dropping_write_size = encrypted_buffer_size - (739 * (encrypted_buffer_size / 739))</code></p>
+<p><code class="language-plaintext highlighter-rouge">bytes_to_write = encrypted_buffer_size / 739 + 1</code>
+<code class="language-plaintext highlighter-rouge">iterations_until_dropping_write_size = encrypted_buffer_size - (739 * (encrypted_buffer_size / 739))</code></p>
 
 <p>The loop operates this way:</p>
 
 <ol>
-  <li>If the current number of iterations is equal to <code class="highlighter-rouge">iterations_until_dropping_write_size</code>, subtract 1 from <code class="highlighter-rouge">bytes_to_write</code>.</li>
-  <li>Write 4 pseudo-random bytes from the Mersenne Twister</li>
-  <li>Write <code class="highlighter-rouge">bytes_to_write</code> bytes from the AES encrypted buffer.</li>
+  <li>If the current number of iterations is equal to <code class="language-plaintext highlighter-rouge">iterations_until_dropping_write_size</code>, subtract 1 from <code class="language-plaintext highlighter-rouge">bytes_to_write</code>.</li>
+  <li>Write 4 bytes from the junk array.</li>
+  <li>Write <code class="language-plaintext highlighter-rouge">bytes_to_write</code> bytes from the AES encrypted buffer.</li>
 </ol>
 
 <p>After this, the whole buffer goes through a XOR operation before being written to the file. The buffer is XORed against 4 bytes from disk serial number, retrieved in the same method mentioned previously.</p>
@@ -1637,26 +1647,26 @@ The first 4 bytes in that array are the BIOS S/N, and then each 4 bytes are the 
 
 
 <span class="k">def</span> <span class="nf">get_disk_sn</span><span class="p">(</span><span class="n">first_four_bytes</span><span class="p">):</span>
-  <span class="n">xored_magic</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">first_four_bytes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">xored_magic</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">first_four_bytes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
   <span class="k">return</span> <span class="n">xored_magic</span> <span class="o">^</span> <span class="n">FILE_MAGIC</span>
 
 <span class="nb">input</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"intel.txt.enc"</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">)</span>
 <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"intel.txt"</span><span class="p">,</span> <span class="s">"wb"</span><span class="p">)</span>
-<span class="n">disk_sn</span> <span class="o">=</span> <span class="n">get_disk_sn</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"Disk S/N: "</span> <span class="o">+</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">disk_sn</span><span class="p">))</span>
-<span class="nb">input</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">disk_sn</span> <span class="o">=</span> <span class="n">get_disk_sn</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Disk S/N: "</span> <span class="o">+</span> <span class="n">struct</span><span class="p">.</span><span class="n">pack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">disk_sn</span><span class="p">))</span>
+<span class="nb">input</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-    <span class="n">buf</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="nb">input</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
         <span class="k">break</span>
-    <span class="n">input_byte</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">buf</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">input_byte</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">buf</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_byte</span> <span class="o">^</span> <span class="n">disk_sn</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
-    <span class="n">out_byte</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
-    <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out_byte</span><span class="p">)</span>
+    <span class="n">out_byte</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">pack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">out_byte</span><span class="p">)</span>
 
-<span class="nb">input</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nb">input</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">output</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s">"Done"</span><span class="p">)</span></code></pre></figure>
 
@@ -1665,13 +1675,13 @@ The first 4 bytes in that array are the BIOS S/N, and then each 4 bytes are the 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell">Disk S/N: 0000
 Done</code></pre></figure>
 
-<p>So now we know the disk serial number, and we have the original file before XOR at <code class="highlighter-rouge">intel.txt</code>.</p>
+<p>So now we know the disk serial number, and we have the original file before XOR at <code class="language-plaintext highlighter-rouge">intel.txt</code>.</p>
 
 <h2 id="solving-the-mac-address">Solving the MAC address</h2>
 
 <p>Now it’s important to use a hint that we’ve been given at the beginning of the challenge. The challenge text mentioned the manufacturer was “Or… Po… Ltd.”, so we’ll look for this specific MAC vendor and it’s MAC address range.</p>
 
-<p>I personally downloaded the MAC vendor list from <a href="https://gist.github.com/aallan/b4bb86db86079509e6159810ae9bd3e4">GitHub</a>, and ran a regex with Sublime Text: <code class="highlighter-rouge">Or.+.+.+ P</code>. I found this MAC vendor with the 00:13:37 address prefix: <code class="highlighter-rouge">001337  Orient Power Home Network Ltd.</code></p>
+<p>I personally downloaded the MAC vendor list from <a href="https://gist.github.com/aallan/b4bb86db86079509e6159810ae9bd3e4">GitHub</a>, and ran a regex with Sublime Text: <code class="language-plaintext highlighter-rouge">Or.+.+.+ P</code>. I found this MAC vendor with the 00:13:37 address prefix: <code class="language-plaintext highlighter-rouge">001337  Orient Power Home Network Ltd.</code></p>
 
 <p>So now we know the first 3 bytes of our MAC, it’s a matter of a few seconds to brute-force through 0xffffff MD5 combinations. I wrote a Python script to reconstruct the MD5 from the nibbles and brute-force the MD5 hash to find the rest of the MAC:</p>
 
@@ -1685,27 +1695,27 @@ Done</code></pre></figure>
 <span class="n">known_mac</span> <span class="o">=</span> <span class="s">"</span><span class="se">\x00\x13\x37</span><span class="s">"</span>
 
 <span class="nb">input</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"intel.txt"</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">)</span>
-<span class="nb">input</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">packed_md5</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+<span class="nb">input</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">packed_md5</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="nb">input</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
 <span class="n">real_md5</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
 
-<span class="c"># Reconstruct MD5 from nibbles</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
-  <span class="n">real_md5</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">packed_md5</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="n">packed_md5</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1"># Reconstruct MD5 from nibbles
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+  <span class="n">real_md5</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">packed_md5</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="n">packed_md5</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s">"found md5"</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">real_md5</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">binascii</span><span class="p">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">real_md5</span><span class="p">))</span>
 
-<span class="c"># bruteforce</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"bruteforcing 3 bytes"</span><span class="p">)</span>
+<span class="c1"># bruteforce
+</span><span class="k">print</span><span class="p">(</span><span class="s">"bruteforcing 3 bytes"</span><span class="p">)</span>
 <span class="n">allbytes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)]</span>
-<span class="k">for</span> <span class="n">byte_sequence</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">(</span><span class="n">allbytes</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
-  <span class="k">if</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">known_filename</span> <span class="o">+</span> <span class="n">known_mac</span> <span class="o">+</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">byte_sequence</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span> <span class="o">==</span> <span class="n">real_md5</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">byte_sequence</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="n">permutations</span><span class="p">(</span><span class="n">allbytes</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">md5</span><span class="p">(</span><span class="n">known_filename</span> <span class="o">+</span> <span class="n">known_mac</span> <span class="o">+</span> <span class="s">""</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">byte_sequence</span><span class="p">)).</span><span class="n">digest</span><span class="p">()</span> <span class="o">==</span> <span class="n">real_md5</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"jackpot"</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">byte_sequence</span><span class="p">)</span>
     <span class="k">break</span></code></pre></figure>
 
-<p>And we got our 3 bytes after a few seconds, the MAC is <code class="highlighter-rouge">00:13:37::8e:ab:66</code>:</p>
+<p>And we got our 3 bytes after a few seconds, the MAC is <code class="language-plaintext highlighter-rouge">00:13:37::8e:ab:66</code>:</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">found</span> <span class="n">md5</span>
 <span class="mi">0949</span><span class="n">b46b73e3af6f5afc81955367295c</span>
@@ -1713,9 +1723,9 @@ Done</code></pre></figure>
 <span class="n">jackpot</span>
 <span class="p">(</span><span class="s">'</span><span class="se">\x8e</span><span class="s">'</span><span class="p">,</span> <span class="s">'</span><span class="se">\xab</span><span class="s">'</span><span class="p">,</span> <span class="s">'f'</span><span class="p">)</span></code></pre></figure>
 
-<p>As for the BIOS serial number, I was working in a VMware Windows machine and my encrypted files matched the bytes where I guessed the BIOS serial number was supposed to be retrieved from. So personally, I didn’t need to write any scripts, I knew the 4 bytes were “<code class="highlighter-rouge">VMwa</code>”. In theory, to extract the BIOS, you would need to brute-force the mersenne twister PRNG with different seeds until you will find the seed you need. That seed is the 4 bytes from the BIOS S/N. Please note that the values used for Mersenne “tempering” operations are different than the usual implementations you would find online, you should match the bitmasks to the ones used in the binary. In this case, <code class="highlighter-rouge">b = 0x13a58ad</code> and <code class="highlighter-rouge">c = 0x1df8c</code>. Please refer to the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister#Algorithmic_detail">Algorithmic Detail</a> section to see how these are used.</p>
+<p>As for the BIOS serial number, I was working in a VMware Windows machine and my encrypted files matched the bytes where I guessed the BIOS serial number was supposed to be retrieved from. So personally, I didn’t need to write any scripts, I just knew the 4 bytes were “<code class="language-plaintext highlighter-rouge">VMwa</code>”, Lucky me.</p>
 
-<p>To solve this, I wrote a Python script that utilizes <code class="highlighter-rouge">wincrypto</code>, which provides WinCrypto bindings for Python. I have followed the same calculation as they are in the binary, the script can be executed against the file after reversing the XOR operation with the previous script.</p>
+<p>To solve this, I wrote a Python script that utilizes <code class="language-plaintext highlighter-rouge">wincrypto</code>, which provides WinCrypto bindings for Python. I have followed the same calculation as they are in the binary, the script can be executed against the file after reversing the XOR operation with the previous script.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">from</span> <span class="nn">wincrypto</span> <span class="kn">import</span> <span class="n">CryptCreateHash</span><span class="p">,</span> <span class="n">CryptHashData</span><span class="p">,</span> <span class="n">CryptDeriveKey</span><span class="p">,</span> <span class="n">CryptDecrypt</span>
@@ -1728,13 +1738,13 @@ Done</code></pre></figure>
 <span class="n">known_bios_sn</span><span class="o">=</span><span class="s">"VMwa"</span>
 <span class="n">target_file</span> <span class="o">=</span> <span class="s">"intel.txt"</span>
 
-<span class="n">assumed_filesize</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">target_file</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2992</span><span class="p">)</span>
+<span class="n">assumed_filesize</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">target_file</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2992</span><span class="p">)</span>
 <span class="n">encrypted_size</span> <span class="o">=</span> <span class="n">assumed_filesize</span>
 
 <span class="k">if</span> <span class="n">encrypted_size</span> <span class="o">%</span> <span class="mi">16</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
   <span class="n">encrypted_size</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">16</span> <span class="o">-</span> <span class="p">(</span><span class="n">encrypted_size</span> <span class="o">%</span> <span class="mi">16</span><span class="p">))</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s">"encrypted_size: </span><span class="si">%</span><span class="s">d"</span> <span class="o">%</span> <span class="n">encrypted_size</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"encrypted_size: %d"</span> <span class="o">%</span> <span class="n">encrypted_size</span><span class="p">)</span>
 
 <span class="n">bytes_written_each_time</span> <span class="o">=</span> <span class="n">encrypted_size</span> <span class="o">/</span> <span class="mi">739</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="n">repetitions_until_dropping_write_size</span> <span class="o">=</span> <span class="n">encrypted_size</span> <span class="o">-</span> <span class="p">(</span><span class="mi">739</span> <span class="o">*</span> <span class="p">(</span><span class="n">encrypted_size</span> <span class="o">/</span> <span class="mi">739</span><span class="p">))</span>
@@ -1742,36 +1752,36 @@ Done</code></pre></figure>
 
 <span class="n">infile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_file</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">)</span>
 
-<span class="n">magic</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">magic</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x531B008A</span><span class="p">:</span>
+<span class="n">magic</span> <span class="o">=</span> <span class="n">infile</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">struct</span><span class="p">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">"I"</span><span class="p">,</span> <span class="n">magic</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x531B008A</span><span class="p">:</span>
   <span class="k">print</span><span class="p">(</span><span class="s">"magic mismatch"</span><span class="p">)</span>
   <span class="k">raise</span> <span class="nb">IOError</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s">"magic match! :)"</span><span class="p">)</span>
-<span class="n">infile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c"># Offset 32 bytes ahead to skip MD5</span>
-
+<span class="n">infile</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Offset 32 bytes ahead to skip MD5
+</span>
 <span class="n">encrypted_buf</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
 <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">encrypted_buf</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">encrypted_size</span> <span class="o">-</span> <span class="mi">4</span><span class="p">):</span>
   <span class="k">if</span> <span class="n">counter</span> <span class="o">==</span> <span class="n">repetitions_until_dropping_write_size</span><span class="p">:</span>
     <span class="n">bytes_written_each_time</span> <span class="o">-=</span> <span class="mi">1</span>
-  <span class="n">infile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c"># Ignore 4 bytes from the mersenne twister</span>
-  <span class="n">encrypted_buf</span> <span class="o">+=</span> <span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">bytes_written_each_time</span><span class="p">)</span>
+  <span class="n">infile</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Ignore 4 bytes from the 'junk array'
+</span>  <span class="n">encrypted_buf</span> <span class="o">+=</span> <span class="n">infile</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">bytes_written_each_time</span><span class="p">)</span>
   <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <span class="n">encrypted_buf</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">encrypted_buf</span><span class="p">)</span>
-<span class="n">encrypted_buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="o">*</span><span class="mi">4</span> <span class="c"># Pad to match blocksize</span>
-
+<span class="n">encrypted_buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="o">*</span><span class="mi">4</span> <span class="c1"># Pad to match blocksize
+</span>
 <span class="n">hasher</span> <span class="o">=</span> <span class="n">CryptCreateHash</span><span class="p">(</span><span class="n">CALG_MD5</span><span class="p">)</span>
 <span class="n">CryptHashData</span><span class="p">(</span><span class="n">hasher</span><span class="p">,</span> <span class="n">known_mac</span> <span class="o">+</span> <span class="n">known_bios_sn</span> <span class="o">+</span> <span class="n">known_serial</span><span class="p">)</span>
 <span class="n">aes_key</span> <span class="o">=</span> <span class="n">CryptDeriveKey</span><span class="p">(</span><span class="n">hasher</span><span class="p">,</span> <span class="n">CALG_AES_256</span><span class="p">)</span>
 <span class="n">decrypted_data</span> <span class="o">=</span> <span class="n">CryptDecrypt</span><span class="p">(</span><span class="n">aes_key</span><span class="p">,</span> <span class="n">encrypted_buf</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"len of decrypted data: </span><span class="si">%</span><span class="s">d"</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">decrypted_data</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"len of decrypted data: %d"</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">decrypted_data</span><span class="p">))</span>
 
 
 <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'solution.txt'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span>
-<span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">decrypted_data</span><span class="p">)</span>
-<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre></figure>
+<span class="n">output</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">decrypted_data</span><span class="p">)</span>
+<span class="n">output</span><span class="p">.</span><span class="n">close</span><span class="p">()</span></code></pre></figure>
 
 <p>Let’s execute the script and look at the contents..</p>
 
@@ -2004,7 +2014,7 @@ PADDINGPADDINGPADDINGPADDINGPADDINGPADDINGPADDING...</code></pre></figure>
 
 
 <footer class="footer-main">
-    Yanir Tsarimi © 2019 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
+    Yanir Tsarimi © 2023 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
 
     <p class="extra">
         <a class="link" href="https://github.com/sergiokopplin/indigo">Indigo theme</a> by <a class="link" href="https://github.com/sergiokopplin/indigo">Kopplin</a>
